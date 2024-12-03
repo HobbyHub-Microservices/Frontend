@@ -25,7 +25,7 @@ export default function RootLayout({
                   <ThemeToggle />
                 </div>
               </header>
-              {children}
+              <main className="flex-grow">{children}</main>
             </div>
           </SidebarProvider>
         </ThemeProvider>

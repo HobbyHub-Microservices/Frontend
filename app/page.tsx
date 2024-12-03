@@ -28,17 +28,17 @@ const posts = [
         id: 1,
         author: "NatureLover",
         content: "This is absolutely stunning! The way you've captured the light is incredible.",
-        date: new Date(2023, 4, 15, 14, 30)
+        date: new Date('2020-11-20T10:36:01.516Z')
       },
       {
         id: 2,
         author: "WatercolorNewbie",
         content: "I'm just starting out with watercolors. Do you have any tips for beginners?",
-        date: new Date(2023, 4, 15, 15, 45)
+        date: new Date('2020-11-20T10:36:01.516Z')
       }
     ],
     category: "DIY",
-    date: new Date(2023, 4, 15),
+    date: new Date('2020-11-20T10:36:01.516Z'),
     images: [
       "/placeholder.svg?height=400&width=600&text=Watercolor+Painting+1",
       "/placeholder.svg?height=400&width=600&text=Watercolor+Painting+2",
@@ -57,11 +57,11 @@ const posts = [
         id: 1,
         author: "FellowRunner",
         content: "Congratulations! That's an amazing achievement. What was your training regimen like?",
-        date: new Date(2023, 4, 14, 18, 20)
+        date: new Date('2020-11-20T10:36:01.516Z')
       }
     ],
     category: "Storytime",
-    date: new Date(2023, 4, 14),
+    date: new Date('2020-11-20T10:36:01.516Z'),
     images: [
       "/placeholder.svg?height=400&width=600&text=Marathon+Photo+1",
       "/placeholder.svg?height=400&width=600&text=Marathon+Photo+2"
@@ -79,7 +79,7 @@ const posts = [
         id: 1,
         author: "GrandmasterFlash",
         content: "I usually go for the Sveshnikov Variation. It leads to sharp, dynamic positions.",
-        date: new Date(2023, 4, 13, 10, 15)
+        date: new Date('2020-11-20T10:36:01.516Z')
       },
       {
         id: 2,
@@ -89,7 +89,7 @@ const posts = [
       }
     ],
     category: "Discussion",
-    date: new Date(2023, 4, 13),
+    date: new Date('2020-11-20T10:36:01.516Z'),
     images: []
   },
   {
@@ -104,11 +104,11 @@ const posts = [
         id: 1,
         author: "SourdoughFanatic",
         content: "That's a beautiful loaf! How long did you let it proof?",
-        date: new Date(2023, 4, 12, 14, 30)
+        date: new Date('2020-11-20T10:36:01.516Z'),
       }
     ],
     category: "DIY",
-    date: new Date(2023, 4, 12),
+    date: new Date('2020-11-20T10:36:01.516Z'),
     images: [
       "/placeholder.svg?height=400&width=600&text=Sourdough+Bread"
     ]
@@ -125,17 +125,17 @@ const posts = [
         id: 1,
         author: "NightSkyLover",
         content: "Wow, the detail is incredible! What camera and settings did you use?",
-        date: new Date(2023, 4, 11, 9, 45)
+        date: new Date('2020-11-20T10:36:01.516Z')
       },
       {
         id: 2,
         author: "AmateurAstronomer",
         content: "I can see the Andromeda galaxy in your shot! Amazing work.",
-        date: new Date(2023, 4, 11, 10, 30)
+        date: new Date('2020-11-20T10:36:01.516Z')
       }
     ],
     category: "Storytime",
-    date: new Date(2023, 4, 11),
+    date: new Date('2020-11-20T10:36:01.516Z'),
     images: [
       "/placeholder.svg?height=400&width=600&text=Milky+Way+Photo+1",
       "/placeholder.svg?height=400&width=600&text=Milky+Way+Photo+2",
@@ -171,53 +171,54 @@ export default function Home() {
     })
 
   return (
-    <div className="flex min-h-screen bg-background text-foreground">
-      <LeftSidebar onHobbySelect={handleHobbySelect} />
-      <main className="flex-1 p-6 overflow-auto">
-        <div className="max-w-6xl mx-auto">
-          {selectedHobby && (
-            <div className="mb-8">
-              <div className="flex items-center mb-4">
-                <Avatar className="h-12 w-12 mr-4">
-                  <AvatarImage src={`/placeholder.svg?height=48&width=48&text=${selectedHobby.name[0]}`} alt={selectedHobby.name} />
-                  <AvatarFallback>{selectedHobby.name[0]}</AvatarFallback>
-                </Avatar>
-                <h1 className="text-3xl font-bold">{selectedHobby.name}</h1>
-              </div>
-              <p className="text-lg text-muted-foreground mb-4">{selectedHobby.description}</p>
+      <div className="flex min-h-screen bg-background text-foreground">
+        <LeftSidebar className="h-full" onHobbySelect={handleHobbySelect}/>
+        <main className="flex-1 p-6 overflow-auto h-full">
+          <div className="max-w-6xl mx-auto">
+            {selectedHobby && (
+                <div className="mb-8">
+                  <div className="flex items-center mb-4">
+                    <Avatar className="h-12 w-12 mr-4">
+                      <AvatarImage src={`/placeholder.svg?height=48&width=48&text=${selectedHobby.name[0]}`}
+                                   alt={selectedHobby.name}/>
+                      <AvatarFallback>{selectedHobby.name[0]}</AvatarFallback>
+                    </Avatar>
+                    <h1 className="text-3xl font-bold">{selectedHobby.name}</h1>
+                  </div>
+                  <p className="text-lg text-muted-foreground mb-4">{selectedHobby.description}</p>
+                </div>
+            )}
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
+              <TabsList>
+                <TabsTrigger value="new">New</TabsTrigger>
+                <TabsTrigger value="popular">Popular</TabsTrigger>
+              </TabsList>
+            </Tabs>
+            <div className="flex justify-between items-center mb-6">
+              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Select category"/>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  <SelectItem value="Discussion">Discussion</SelectItem>
+                  <SelectItem value="Storytime">Storytime</SelectItem>
+                  <SelectItem value="DIY">DIY</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button variant="outline">Create Post</Button>
             </div>
-          )}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-            <TabsList>
-              <TabsTrigger value="new">New</TabsTrigger>
-              <TabsTrigger value="popular">Popular</TabsTrigger>
-            </TabsList>
-          </Tabs>
-          <div className="flex justify-between items-center mb-6">
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
-                <SelectItem value="Discussion">Discussion</SelectItem>
-                <SelectItem value="Storytime">Storytime</SelectItem>
-                <SelectItem value="DIY">DIY</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button variant="outline">Create Post</Button>
+            <div className="space-y-6">
+              {filteredPosts.map((post) => (
+                  <PostCard key={post.id} {...post} comments={post.comments.length}/>
+              ))}
+            </div>
+            {filteredPosts.length === 0 && (
+                <p className="text-center text-muted-foreground mt-8">No posts found for this hobby and category.</p>
+            )}
           </div>
-          <div className="space-y-6">
-            {filteredPosts.map((post) => (
-              <PostCard key={post.id} {...post} comments={post.comments.length} />
-            ))}
-          </div>
-          {filteredPosts.length === 0 && (
-            <p className="text-center text-muted-foreground mt-8">No posts found for this hobby and category.</p>
-          )}
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
   )
 }
 

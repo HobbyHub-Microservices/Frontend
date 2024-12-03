@@ -53,7 +53,7 @@ export function LeftSidebar({ onHobbySelect }) {
               <SidebarMenu>
                 <SidebarMenuItem>
                   <SidebarMenuButton asChild>
-                    <a href="#home">
+                    <a href="/">
                       <Home className="mr-2 h-4 w-4" />
                       <span>Home</span>
                     </a>

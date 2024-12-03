@@ -31,7 +31,8 @@ export function PostCard({ id, title, content, author, hobby, likes, comments, c
             <div>
               <CardTitle className="text-lg">{title}</CardTitle>
               <p className="text-sm text-muted-foreground">
-                Posted by {author} in {hobby} • {date.toLocaleDateString()}
+                Posted by <span className="text-blue-500">{author}</span> in <span
+                  className="font-bold">{hobby}</span> • {date.toLocaleDateString("en-GB")}
               </p>
             </div>
           </div>
