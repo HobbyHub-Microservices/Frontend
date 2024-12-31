@@ -1,7 +1,10 @@
+'use client';
+
 import '../styles/globals.css'
 import { SidebarProvider } from '../components/ui/sidebar'
 import { ThemeProvider } from "../components/theme-provider"
 import { ThemeToggle } from "@/../../components/theme-toggle"
+import Header from "@/app/components/Header";
 
 export default function RootLayout({
   children,
@@ -18,11 +21,13 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SidebarProvider>
-            <div className="flex min-h-screen flex-col">
+            <div className="flex flex-col flex-grow">
               <header className="border-b">
-                <div className="container flex items-center justify-between py-4">
-                  <h1 className="text-2xl font-bold"></h1>
-                  <ThemeToggle />
+                <div className="w-full flex justify-end items-center py-4 px-4">
+                  <div className="flex items-center space-x-4">
+                    <Header/>
+                    <ThemeToggle/>
+                  </div>
                 </div>
               </header>
               <main className="flex-grow">{children}</main>

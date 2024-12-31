@@ -1,9 +1,6 @@
-'use client'
-
-import * as React from 'react'
-import { Home, Zap, ThumbsUp, Search } from 'lucide-react'
-
-import { Input } from '../../components/ui/input'
+import React, { useEffect, useState } from 'react';
+import { Home, Zap, ThumbsUp, Search } from 'lucide-react';
+import { Input } from '../../components/ui/input';
 import {
   Sidebar,
   SidebarContent,
@@ -14,38 +11,72 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-} from '../../components/ui/sidebar'
+} from '../../components/ui/sidebar';
 
-const allHobbies = [
-  { name: 'Reading', description: 'Explore new worlds through books' },
-  { name: 'Gardening', description: 'Grow your own plants and flowers' },
-  { name: 'Cooking', description: 'Create delicious meals at home' },
-  { name: 'Photography', description: 'Capture moments and memories' },
-  { name: 'Painting', description: 'Express yourself through art' },
-  { name: 'Hiking', description: 'Explore nature and stay fit' },
-  { name: 'Gaming', description: 'Enjoy interactive entertainment' },
-  { name: 'Knitting', description: 'Create cozy handmade items' },
-  { name: 'Woodworking', description: 'Craft beautiful objects from wood' },
-  { name: 'Yoga', description: 'Improve flexibility and mindfulness' },
-]
+// Define the Hobby type
+interface Hobby {
+  id: number;
+  name: string;
+  description: string;
+  createdAt: string;
+}
 
-export function LeftSidebar({ onHobbySelect }) {
-  const [searchTerm, setSearchTerm] = React.useState('')
-  const [filteredHobbies, setFilteredHobbies] = React.useState(allHobbies)
+// Define the props for the LeftSidebar component
+interface LeftSidebarProps {
+  onHobbySelect: (hobby: Hobby) => void;
+}
 
+export function LeftSidebar({ onHobbySelect }: LeftSidebarProps) {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [allHobbies, setAllHobbies] = useState<Hobby[]>([]);
+  const [filteredHobbies, setFilteredHobbies] = useState<Hobby[]>([]);
+
+  // Fetch hobbies from API
+  useEffect(() => {
+    const fetchHobbies = async () => {
+      console.log('Fetching hobbies from API...');
+      try {
+        const response = await fetch('http://hobbyhub.com/api/hobby');
+        if (!response.ok) {
+          console.error('API error:', response.status, response.statusText);
+          return;
+        }
+        const data: Hobby[] = await response.json();
+        console.log('Fetched data:', data);
+
+        // Check if data is valid
+        if (Array.isArray(data)) {
+          setAllHobbies(data);
+          setFilteredHobbies(data);
+          console.log('State updated with hobbies:', data);
+        } else {
+          console.error('Unexpected data format:', data);
+        }
+      } catch (error) {
+        console.error('Error fetching hobbies:', error);
+      }
+    };
+
+    fetchHobbies();
+  }, []);
+
+  // Handle search input
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const term = event.target.value.toLowerCase()
-    setSearchTerm(term)
-    const filtered = allHobbies.filter(hobby =>
+    const term = event.target.value.toLowerCase();
+    console.log('Search term:', term);
+    setSearchTerm(term);
+
+    const filtered = allHobbies.filter((hobby) =>
         hobby.name.toLowerCase().includes(term)
-    )
-    setFilteredHobbies(filtered)
-  }
+    );
+    setFilteredHobbies(filtered);
+    console.log('Filtered hobbies:', filtered);
+  };
 
   return (
       <Sidebar side="left" className="w-64 border-r">
-        <SidebarHeader className="border-b p-4">
-          <h2 className="text-lg font-semibold">Menu</h2>
+        <SidebarHeader className="p-4">
+          <h2 className="text-lg font-semibold">HobbyHub</h2>
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
@@ -98,7 +129,7 @@ export function LeftSidebar({ onHobbySelect }) {
             <SidebarGroupContent>
               <SidebarMenu>
                 {filteredHobbies.map((hobby) => (
-                    <SidebarMenuItem key={hobby.name}>
+                    <SidebarMenuItem key={hobby.id}>
                       <SidebarMenuButton asChild onClick={() => onHobbySelect(hobby)}>
                         <button>{hobby.name}</button>
                       </SidebarMenuButton>
@@ -106,11 +137,13 @@ export function LeftSidebar({ onHobbySelect }) {
                 ))}
               </SidebarMenu>
               {filteredHobbies.length === 0 && (
-                  <p className="text-sm text-muted-foreground p-2">No hobbies found</p>
+                  <p className="text-sm text-muted-foreground p-2">
+                    No hobbies found
+                  </p>
               )}
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
-  )
+  );
 }
