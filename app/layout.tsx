@@ -5,6 +5,7 @@ import { SidebarProvider } from '../components/ui/sidebar'
 import { ThemeProvider } from "../components/theme-provider"
 import { ThemeToggle } from "@/../../components/theme-toggle"
 import Header from "@/app/components/Header";
+import keycloak from "../keycloak";
 
 export default function RootLayout({
   children,

@@ -1,6 +1,7 @@
 'use client'
 
 import React, {useEffect, useState} from 'react'
+import keycloak from "../keycloak"; // Import Keycloak configuration
 import { LeftSidebar } from './components/left-sidebar'
 import { PostCard } from '@/components/post-card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -146,41 +147,131 @@ const posts = [
 ]
 
 export default function Home() {
-  const [selectedHobby, setSelectedHobby] = useState(null)
-  const [activeTab, setActiveTab] = useState('new')
-  const [selectedCategory, setSelectedCategory] = useState('all')
-  const [isClient, setIsClient] = useState(true)
+  const [selectedHobby, setSelectedHobby] = useState(null);
+  const [activeTab, setActiveTab] = useState("new");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [filteredPosts, setFilteredPosts] = useState([]); // Updated to manage posts dynamically
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    setIsClient(true)
-  }, [])
+    // if (!keycloak.didInitialize) {
+    //   // if (!keycloak.authenticated) {
+    //     keycloak.init({ onLoad: "login-required" }).then((authenticated) => {
+    //       console.log("Keycloak initialization completed. Authenticated:", authenticated);
+    //       if (authenticated) {
+    //         setIsAuthenticated(true);
+    //         setUser(keycloak.tokenParsed); // Parse user info from token
+    //         console.log("Authenticated:", keycloak.tokenParsed);
+    //
+    //         // Fetch user profile from the backend
+    //         fetch("http://hobbyhub.com/api/Users/profile", {
+    //           headers: {
+    //             Authorization: `Bearer ${keycloak.token}`, // Send the token
+    //           },
+    //         })
+    //             .then((response) => {
+    //               if (!response.ok) {
+    //                 throw new Error("Failed to fetch user profile");
+    //               }
+    //               return response.json();
+    //             })
+    //             .then((profileData) => {
+    //               console.log("User Profile:", profileData);
+    //               // Optionally, set this data to state if needed
+    //               // setUserProfile(profileData);
+    //             })
+    //             .catch((err) => console.error("Error fetching user profile:", err));
+    //       } else {
+    //         console.log("User not authenticated");
+    //       }
+    //     });
+    //   console.log("Not autenticated");
+    //   // }
+    // }
+
+
+    const initializeKeycloak = async () => {
+      try {
+        console.log("Starting Keycloak initialization...");
+        const authenticated = await keycloak.init({ onLoad: "login-required" });
+        console.log("Keycloak initialization completed. Authenticated:", authenticated);
+
+        if (authenticated) {
+          setIsAuthenticated(true);
+          setUser(keycloak.tokenParsed); // Parse user info from token
+          console.log("Authenticated:", keycloak.tokenParsed);
+
+          // Fetch user profile from the backend
+          const response = await fetch("http://hobbyhub.com/api/Users/profile", {
+            headers: {
+              Authorization: `Bearer ${keycloak.token}`, // Send the token
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch user profile");
+          }
+
+          const profileData = await response.json();
+          console.log("User Profile:", profileData);
+          // Optionally, set this data to state if needed
+          // setUserProfile(profileData);
+        } else {
+          console.log("User not authenticated");
+        }
+      } catch (err) {
+        console.error("Error during Keycloak initialization or fetching user profile:", err);
+      }
+
+
+    if (!keycloak.didInitialize) {
+      initializeKeycloak();
+    }
+
+    // Token refresh logic
+    const interval = setInterval(() => {
+      keycloak.updateToken(60).catch(() => {
+        console.error("Failed to refresh token");
+        keycloak.logout();
+      });
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      // Fetch posts dynamically from your backend using the token
+      fetch("http://hobbyhub.com/api/posts", {
+        headers: {
+          Authorization: `Bearer ${keycloak.token}`, // Pass the token
+        },
+      })
+          .then((res) => res.json())
+          .then((data) => setFilteredPosts(data))
+          .catch((err) => console.error("Failed to fetch posts:", err));
+    }
+  }, [isAuthenticated]);
 
   const handleHobbySelect = (hobby) => {
-    setSelectedHobby(hobby)
-  }
+    setSelectedHobby(hobby);
+  };
 
-  const filteredPosts = posts
-    .filter(post => !selectedHobby || post.hobby.toLowerCase() === selectedHobby.name.toLowerCase())
-    .filter(post => selectedCategory === 'all' || post.category === selectedCategory)
-    .sort((a, b) => {
-      if (activeTab === 'new') {
-        return b.date.getTime() - a.date.getTime()
-      } else {
-        return b.likes - a.likes
-      }
-    })
-
-  return (
+  return isAuthenticated ? (
       <div className="flex min-h-screen bg-background text-foreground">
-        <LeftSidebar className="h-full" onHobbySelect={handleHobbySelect}/>
+        <LeftSidebar className="h-full" onHobbySelect={handleHobbySelect} />
         <main className="flex-1 p-6 overflow-auto h-full">
           <div className="max-w-6xl mx-auto">
             {selectedHobby && (
                 <div className="mb-8">
                   <div className="flex items-center mb-4">
                     <Avatar className="h-12 w-12 mr-4">
-                      <AvatarImage src={`/placeholder.svg?height=48&width=48&text=${selectedHobby.name[0]}`}
-                                   alt={selectedHobby.name}/>
+                      <AvatarImage
+                          src={`/placeholder.svg?height=48&width=48&text=${selectedHobby.name[0]}`}
+                          alt={selectedHobby.name}
+                      />
                       <AvatarFallback>{selectedHobby.name[0]}</AvatarFallback>
                     </Avatar>
                     <h1 className="text-3xl font-bold">{selectedHobby.name}</h1>
@@ -197,7 +288,7 @@ export default function Home() {
             <div className="flex justify-between items-center mb-6">
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select category"/>
+                  <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Categories</SelectItem>
@@ -210,7 +301,7 @@ export default function Home() {
             </div>
             <div className="space-y-6">
               {filteredPosts.map((post) => (
-                  <PostCard key={post.id} {...post} comments={post.comments.length}/>
+                  <PostCard key={post.id} {...post} comments={post.comments.length} />
               ))}
             </div>
             {filteredPosts.length === 0 && (
@@ -219,6 +310,7 @@ export default function Home() {
           </div>
         </main>
       </div>
-  )
+  ) : (
+      <div>Loading...</div>
+  );
 }
-

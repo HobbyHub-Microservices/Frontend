@@ -1,4 +1,6 @@
-﻿import React from "react";
+﻿'use client';
+
+import React from "react";
 import { CircleUserRound  } from 'lucide-react'; // For Lucide
 import { Button } from "@/components/ui/button"
 import {
@@ -7,11 +9,12 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import keycloak from "@/keycloak";
 
 export default function UserDropdown() {
     const handleLogout = () => {
         console.log("User logged out");
-        // Add your logout logic here
+        keycloak.logout();
     };
 
     return (
