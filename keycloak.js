@@ -85,7 +85,7 @@
 // };
 //
 // export default keycloak;
-
+"use client"
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Keycloak from "keycloak-js";
 

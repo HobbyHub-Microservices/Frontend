@@ -67,6 +67,7 @@ export default function ProfilePage() {
                 },
                 body: JSON.stringify({ userId: keycloak.subject }),
             });
+            console.log(keycloak.token);
 
             if (response.ok) {
                 console.log('Account deleted successfully!');
