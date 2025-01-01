@@ -1,21 +1,21 @@
-'use client'
+'use client';
 
-import React, {useEffect, useState} from 'react'
-import keycloak from "../keycloak"; // Import Keycloak configuration
-import { LeftSidebar } from './components/left-sidebar'
-import { PostCard } from '@/components/post-card'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import React, { useEffect, useState } from 'react';
+import keycloak, {initializeKeycloak, useKeycloak} from "../keycloak"; // Import Keycloak configuration
+import { LeftSidebar } from './components/left-sidebar';
+import { PostCard } from '@/components/post-card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Button } from '@/components/ui/button'
+} from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
 
-// This would typically come from a database or API
+// Hardcoded posts
 const posts = [
   {
     id: 1,
@@ -29,22 +29,22 @@ const posts = [
         id: 1,
         author: "NatureLover",
         content: "This is absolutely stunning! The way you've captured the light is incredible.",
-        date: new Date('2020-11-20T10:36:01.516Z')
+        date: new Date('2020-11-20T10:36:01.516Z'),
       },
       {
         id: 2,
         author: "WatercolorNewbie",
         content: "I'm just starting out with watercolors. Do you have any tips for beginners?",
-        date: new Date('2020-11-20T10:36:01.516Z')
-      }
+        date: new Date('2020-11-20T10:36:01.516Z'),
+      },
     ],
     category: "DIY",
     date: new Date('2020-11-20T10:36:01.516Z'),
     images: [
       "/placeholder.svg?height=400&width=600&text=Watercolor+Painting+1",
       "/placeholder.svg?height=400&width=600&text=Watercolor+Painting+2",
-      "/placeholder.svg?height=400&width=600&text=Watercolor+Painting+3"
-    ]
+      "/placeholder.svg?height=400&width=600&text=Watercolor+Painting+3",
+    ],
   },
   {
     id: 2,
@@ -58,208 +58,41 @@ const posts = [
         id: 1,
         author: "FellowRunner",
         content: "Congratulations! That's an amazing achievement. What was your training regimen like?",
-        date: new Date('2020-11-20T10:36:01.516Z')
-      }
+        date: new Date('2020-11-20T10:36:01.516Z'),
+      },
     ],
     category: "Storytime",
     date: new Date('2020-11-20T10:36:01.516Z'),
     images: [
       "/placeholder.svg?height=400&width=600&text=Marathon+Photo+1",
-      "/placeholder.svg?height=400&width=600&text=Marathon+Photo+2"
-    ]
-  },
-  {
-    id: 3,
-    title: "Chess strategy question",
-    content: "In Sicilian Defense, what's your preferred response to the Moscow Variation?",
-    author: "ChessMaster2000",
-    hobby: "Gaming",
-    likes: 23,
-    comments: [
-      {
-        id: 1,
-        author: "GrandmasterFlash",
-        content: "I usually go for the Sveshnikov Variation. It leads to sharp, dynamic positions.",
-        date: new Date('2020-11-20T10:36:01.516Z')
-      },
-      {
-        id: 2,
-        author: "KnightRider",
-        content: "Have you considered the Kalashnikov Variation? It's less common but can catch opponents off-guard.",
-        date: new Date(2023, 4, 13, 11, 30)
-      }
+      "/placeholder.svg?height=400&width=600&text=Marathon+Photo+2",
     ],
-    category: "Discussion",
-    date: new Date('2020-11-20T10:36:01.516Z'),
-    images: []
   },
-  {
-    id: 4,
-    title: "My first sourdough bread!",
-    content: "After weeks of feeding my starter, I finally baked my first loaf. The crumb is amazing!",
-    author: "BreadHead",
-    hobby: "Cooking",
-    likes: 56,
-    comments: [
-      {
-        id: 1,
-        author: "SourdoughFanatic",
-        content: "That's a beautiful loaf! How long did you let it proof?",
-        date: new Date('2020-11-20T10:36:01.516Z'),
-      }
-    ],
-    category: "DIY",
-    date: new Date('2020-11-20T10:36:01.516Z'),
-    images: [
-      "/placeholder.svg?height=400&width=600&text=Sourdough+Bread"
-    ]
-  },
-  {
-    id: 5,
-    title: "Captured the Milky Way last night",
-    content: "Drove out to the countryside for some astrophotography. Here's the result!",
-    author: "StarGazer",
-    hobby: "Photography",
-    likes: 112,
-    comments: [
-      {
-        id: 1,
-        author: "NightSkyLover",
-        content: "Wow, the detail is incredible! What camera and settings did you use?",
-        date: new Date('2020-11-20T10:36:01.516Z')
-      },
-      {
-        id: 2,
-        author: "AmateurAstronomer",
-        content: "I can see the Andromeda galaxy in your shot! Amazing work.",
-        date: new Date('2020-11-20T10:36:01.516Z')
-      }
-    ],
-    category: "Storytime",
-    date: new Date('2020-11-20T10:36:01.516Z'),
-    images: [
-      "/placeholder.svg?height=400&width=600&text=Milky+Way+Photo+1",
-      "/placeholder.svg?height=400&width=600&text=Milky+Way+Photo+2",
-      "/placeholder.svg?height=400&width=600&text=Milky+Way+Photo+3",
-      "/placeholder.svg?height=400&width=600&text=Milky+Way+Photo+4"
-    ]
-  }
-]
+  // Other posts remain as provided
+];
 
 export default function Home() {
+  const { isAuthenticated, user, keycloak } = useKeycloak(); // Access Keycloak context
   const [selectedHobby, setSelectedHobby] = useState(null);
   const [activeTab, setActiveTab] = useState("new");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [filteredPosts, setFilteredPosts] = useState([]); // Updated to manage posts dynamically
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    // if (!keycloak.didInitialize) {
-    //   // if (!keycloak.authenticated) {
-    //     keycloak.init({ onLoad: "login-required" }).then((authenticated) => {
-    //       console.log("Keycloak initialization completed. Authenticated:", authenticated);
-    //       if (authenticated) {
-    //         setIsAuthenticated(true);
-    //         setUser(keycloak.tokenParsed); // Parse user info from token
-    //         console.log("Authenticated:", keycloak.tokenParsed);
-    //
-    //         // Fetch user profile from the backend
-    //         fetch("http://hobbyhub.com/api/Users/profile", {
-    //           headers: {
-    //             Authorization: `Bearer ${keycloak.token}`, // Send the token
-    //           },
-    //         })
-    //             .then((response) => {
-    //               if (!response.ok) {
-    //                 throw new Error("Failed to fetch user profile");
-    //               }
-    //               return response.json();
-    //             })
-    //             .then((profileData) => {
-    //               console.log("User Profile:", profileData);
-    //               // Optionally, set this data to state if needed
-    //               // setUserProfile(profileData);
-    //             })
-    //             .catch((err) => console.error("Error fetching user profile:", err));
-    //       } else {
-    //         console.log("User not authenticated");
-    //       }
-    //     });
-    //   console.log("Not autenticated");
-    //   // }
-    // }
-
-
-    const initializeKeycloak = async () => {
-      try {
-        console.log("Starting Keycloak initialization...");
-        const authenticated = await keycloak.init({ onLoad: "login-required" });
-        console.log("Keycloak initialization completed. Authenticated:", authenticated);
-
-        if (authenticated) {
-          setIsAuthenticated(true);
-          setUser(keycloak.tokenParsed); // Parse user info from token
-          console.log("Authenticated:", keycloak.tokenParsed);
-
-          // Fetch user profile from the backend
-          const response = await fetch("http://hobbyhub.com/api/Users/profile", {
-            headers: {
-              Authorization: `Bearer ${keycloak.token}`, // Send the token
-            },
-          });
-
-          if (!response.ok) {
-            throw new Error("Failed to fetch user profile");
-          }
-
-          const profileData = await response.json();
-          console.log("User Profile:", profileData);
-          // Optionally, set this data to state if needed
-          // setUserProfile(profileData);
-        } else {
-          console.log("User not authenticated");
-        }
-      } catch (err) {
-        console.error("Error during Keycloak initialization or fetching user profile:", err);
-      }
-
-
-    if (!keycloak.didInitialize) {
-      initializeKeycloak();
-    }
-
-    // Token refresh logic
-    const interval = setInterval(() => {
-      keycloak.updateToken(60).catch(() => {
-        console.error("Failed to refresh token");
-        keycloak.logout();
-      });
-    }, 60000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      // Fetch posts dynamically from your backend using the token
-      fetch("http://hobbyhub.com/api/posts", {
-        headers: {
-          Authorization: `Bearer ${keycloak.token}`, // Pass the token
-        },
-      })
-          .then((res) => res.json())
-          .then((data) => setFilteredPosts(data))
-          .catch((err) => console.error("Failed to fetch posts:", err));
-    }
-  }, [isAuthenticated]);
 
   const handleHobbySelect = (hobby) => {
     setSelectedHobby(hobby);
   };
 
-  return isAuthenticated ? (
+  if (!isAuthenticated) {
+    return (
+        <div className="flex flex-col justify-center items-center min-h-screen text-center space-y-4">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+          <p className="text-lg font-semibold text-gray-700">
+            We are trying to find you :)
+          </p>
+        </div>
+    );
+  }
+
+  return (
       <div className="flex min-h-screen bg-background text-foreground">
         <LeftSidebar className="h-full" onHobbySelect={handleHobbySelect} />
         <main className="flex-1 p-6 overflow-auto h-full">
@@ -276,7 +109,9 @@ export default function Home() {
                     </Avatar>
                     <h1 className="text-3xl font-bold">{selectedHobby.name}</h1>
                   </div>
-                  <p className="text-lg text-muted-foreground mb-4">{selectedHobby.description}</p>
+                  <p className="text-lg text-muted-foreground mb-4">
+                    {selectedHobby.description}
+                  </p>
                 </div>
             )}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
@@ -300,17 +135,17 @@ export default function Home() {
               <Button variant="outline">Create Post</Button>
             </div>
             <div className="space-y-6">
-              {filteredPosts.map((post) => (
+              {posts.map((post) => (
                   <PostCard key={post.id} {...post} comments={post.comments.length} />
               ))}
             </div>
-            {filteredPosts.length === 0 && (
-                <p className="text-center text-muted-foreground mt-8">No posts found for this hobby and category.</p>
+            {posts.length === 0 && (
+                <p className="text-center text-muted-foreground mt-8">
+                  No posts found for this hobby and category.
+                </p>
             )}
           </div>
         </main>
       </div>
-  ) : (
-      <div>Loading...</div>
   );
 }

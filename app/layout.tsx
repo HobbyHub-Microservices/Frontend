@@ -5,7 +5,7 @@ import { SidebarProvider } from '../components/ui/sidebar'
 import { ThemeProvider } from "../components/theme-provider"
 import { ThemeToggle } from "@/../../components/theme-toggle"
 import Header from "@/app/components/Header";
-import keycloak from "../keycloak";
+import keycloak, {KeycloakProvider} from "../keycloak";
 
 export default function RootLayout({
   children,
@@ -15,6 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+      <KeycloakProvider>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -35,6 +36,7 @@ export default function RootLayout({
             </div>
           </SidebarProvider>
         </ThemeProvider>
+        </KeycloakProvider>
       </body>
     </html>
   )
