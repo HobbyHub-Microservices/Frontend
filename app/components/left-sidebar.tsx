@@ -75,10 +75,7 @@ export function LeftSidebar({ onHobbySelect }: LeftSidebarProps) {
 
   return (
       <Sidebar side="left" className="w-64 border-r">
-        <SidebarHeader className="p-4">
-          <h2 className="text-lg font-semibold">HobbyHub</h2>
-        </SidebarHeader>
-        <SidebarContent>
+        <SidebarContent className="mt-20">
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu>
