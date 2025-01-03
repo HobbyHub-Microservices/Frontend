@@ -30,12 +30,12 @@ export default function Home() {
   const handleHobbySelect = (hobby) => {
     setSelectedHobby(hobby);
   };
-
+  const apiUrl = process.env.NEXT_PUBLIC_POSTQUERY_API_URL;
   // Fetch posts from the post-query endpoint
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('/api/get-query', {
+        const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -46,10 +46,12 @@ export default function Home() {
           throw new Error(`Failed to fetch posts: ${response.statusText}`);
         }
 
+        console.log(response)
+
         const responseData = await response.json();
         console.log('Fetched data:', responseData);
 
-        const postData = responseData.data; // Access the `data` property
+        const postData = responseData; // Access the `data` property
         if (!postData || typeof postData !== 'object') {
           throw new Error('Unexpected data format');
         }

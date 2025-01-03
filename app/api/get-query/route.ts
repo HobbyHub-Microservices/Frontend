@@ -1,10 +1,9 @@
-﻿process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
-import { NextResponse } from 'next/server';
+﻿import {NextResponse} from "next/server";
 
 export async function GET(request: Request) {
     try {
         const apiUrl = process.env.NEXT_PUBLIC_POSTQUERY_API_URL;
+        console.log(apiUrl)
         if (!apiUrl) {
             return NextResponse.json(
                 { error: 'Backend API URL is not configured' },
