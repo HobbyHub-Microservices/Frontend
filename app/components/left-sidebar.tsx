@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Home, Zap, ThumbsUp, Search } from 'lucide-react';
 import { Input } from '../../components/ui/input';
+import { useKeycloak } from "@/keycloak"; // Use Keycloak context
 import {
   Sidebar,
   SidebarContent,
@@ -30,13 +31,22 @@ export function LeftSidebar({ onHobbySelect }: LeftSidebarProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [allHobbies, setAllHobbies] = useState<Hobby[]>([]);
   const [filteredHobbies, setFilteredHobbies] = useState<Hobby[]>([]);
+  const { keycloak } = useKeycloak(); // Access Keycloak
 
   // Fetch hobbies from API
   useEffect(() => {
+    const apiUrl = process.env.NEXT_PUBLIC_HOBBY_API_URL;
     const fetchHobbies = async () => {
       console.log('Fetching hobbies from API...');
       try {
-        const response = await fetch('http://hobbyhub.com/api/hobby');
+        const response = await fetch(apiUrl, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${keycloak.token}`,
+
+          },
+        });
         if (!response.ok) {
           console.error('API error:', response.status, response.statusText);
           return;

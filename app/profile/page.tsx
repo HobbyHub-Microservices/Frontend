@@ -64,7 +64,7 @@ export default function ProfilePage() {
             const response = await fetch(`${url}/delete-account?keycloakId=${keycloak.subject}`, {
                 method: 'DELETE',
                 headers: {
-                    Authorization: `Bearer ${keycloak.token}`, // User token
+                    Authorization: `Bearer ${keycloak.token}`,
                 },
             });
             console.log(keycloak.token);

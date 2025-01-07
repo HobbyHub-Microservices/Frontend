@@ -113,7 +113,7 @@ export default function CreatePost() {
         };
 
         try {
-            const postQueryResponse = await fetch('/api/post-query', {
+            const postQueryResponse = await fetch('/api/query/Post', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(postQueryData),
@@ -143,7 +143,7 @@ export default function CreatePost() {
             };
 
             console.log(postCommandData)
-            const postCommandResponse = await fetch('/api/post-command', {
+            const postCommandResponse = await fetch('/api/Post', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(postCommandData),
