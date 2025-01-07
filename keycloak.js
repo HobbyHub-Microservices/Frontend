@@ -1,6 +1,4 @@
-﻿"use client";
-
-import React, { createContext, useContext, useEffect, useState } from "react";
+﻿import React, { createContext, useContext, useEffect, useState } from "react";
 import Keycloak from "keycloak-js";
 
 const KeycloakContext = createContext();
