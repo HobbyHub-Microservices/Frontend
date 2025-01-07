@@ -22,6 +22,7 @@ const nextConfig = {
         parallelServerCompiles: true,
     },
     env: {
+        NEXT_PUBLIC_KEYCLOAK_URL: process.env.PUBLIC_NEXT_KEYCLOAK_URL,
         KEYCLOAK_URL: process.env.KEYCLOAK_URL,
         KEYCLOAK_CLIENT_ID: process.env.KEYCLOAK_CLIENT_ID,
         KEYCLOAK_REALM: process.env.KEYCLOAK_REALM,
@@ -32,6 +33,7 @@ const nextConfig = {
     },
 }
 console.log('Environment Variables:');
+console.log('KEYCLOAK_URL:', process.env.NEXT_PUBLIC_KEYCLOAK_URL);
 console.log('KEYCLOAK_URL:', process.env.KEYCLOAK_URL);
 console.log('KEYCLOAK_CLIENT_ID:', process.env.KEYCLOAK_CLIENT_ID);
 console.log('KEYCLOAK_REALM:', process.env.KEYCLOAK_REALM);
