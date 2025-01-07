@@ -31,6 +31,14 @@ const nextConfig = {
         POSTCOMMAND_API_URL: process.env.POSTCOMMAND_API_URL,
     },
 }
+console.log('Environment Variables:');
+console.log('KEYCLOAK_URL:', process.env.KEYCLOAK_URL);
+console.log('KEYCLOAK_CLIENT_ID:', process.env.KEYCLOAK_CLIENT_ID);
+console.log('KEYCLOAK_REALM:', process.env.KEYCLOAK_REALM);
+console.log('HOBBY_API_URL:', process.env.HOBBY_API_URL);
+console.log('USER_API_URL:', process.env.USER_API_URL);
+console.log('POSTQUERY_API_URL:', process.env.POSTQUERY_API_URL);
+console.log('POSTCOMMAND_API_URL:', process.env.POSTCOMMAND_API_URL);
 
 mergeConfig(nextConfig, userConfig)
 
