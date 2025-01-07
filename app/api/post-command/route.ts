@@ -8,7 +8,7 @@ export async function POST(request: Request) {
         const data = await request.json();
         console.log('PostQuery Data:', data);
 
-        const apiUrl = process.env.NEXT_PUBLIC_POSTCOMMAND_API_URL;
+        const apiUrl = process.env.POSTCOMMAND_API_URL;
         if (!apiUrl) {
             return NextResponse.json(
                 { error: 'Backend API URL is not configured' },

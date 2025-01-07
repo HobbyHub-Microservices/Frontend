@@ -22,13 +22,13 @@ const nextConfig = {
         parallelServerCompiles: true,
     },
     env: {
-        NEXT_PUBLIC_KEYCLOAK_URL: process.env.NEXT_PUBLIC_KEYCLOAK_URL,
-        NEXT_PUBLIC_KEYCLOAK_CLIENT_ID: process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID,
-        NEXT_PUBLIC_KEYCLOAK_REALM: process.env.NEXT_PUBLIC_KEYCLOAK_REALM,
-        NEXT_PUBLIC_HOBBY_API_URL: process.env.NEXT_PUBLIC_HOBBY_API_URL,
-        NEXT_PUBLIC_USER_API_URL: process.env.NEXT_PUBLIC_USER_API_URL,
-        NEXT_PUBLIC_POSTQUERY_API_URL: process.env.NEXT_PUBLIC_POSTQUERY_API_URL,
-        NEXT_PUBLIC_POSTCOMMAND_API_URL: process.env.NEXT_PUBLIC_POSTCOMMAND_API_URL,
+        KEYCLOAK_URL: process.env.KEYCLOAK_URL,
+        KEYCLOAK_CLIENT_ID: process.env.KEYCLOAK_CLIENT_ID,
+        KEYCLOAK_REALM: process.env.KEYCLOAK_REALM,
+        HOBBY_API_URL: process.env.HOBBY_API_URL,
+        USER_API_URL: process.env.USER_API_URL,
+        POSTQUERY_API_URL: process.env.POSTQUERY_API_URL,
+        POSTCOMMAND_API_URL: process.env.POSTCOMMAND_API_URL,
     },
 }
 

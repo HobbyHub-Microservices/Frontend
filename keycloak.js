@@ -6,15 +6,15 @@ import Keycloak from "keycloak-js";
 const KeycloakContext = createContext();
 
 
-console.log(`Keycloak url: ${process.env.NEXT_PUBLIC_KEYCLOAK_URL}`);
-console.log(`Keycloak realm: ${process.env.NEXT_PUBLIC_KEYCLOAK_REALM}`);
-console.log(`keycloak_cliendid: ${process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID}`);
+console.log(`Keycloak url: ${process.env.KEYCLOAK_URL}`);
+console.log(`Keycloak realm: ${process.env.KEYCLOAK_REALM}`);
+console.log(`keycloak_cliendid: ${process.env.KEYCLOAK_CLIENT_ID}`);
 
 const keycloak = typeof window !== "undefined"
     ? new Keycloak({
-        url: process.env.NEXT_PUBLIC_KEYCLOAK_URL,
-        realm: process.env.NEXT_PUBLIC_KEYCLOAK_REALM,
-        clientId: process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID,
+        url: process.env.KEYCLOAK_URL,
+        realm: process.env.KEYCLOAK_REALM,
+        clientId: process.env.KEYCLOAK_CLIENT_ID,
     })
     : null;
 

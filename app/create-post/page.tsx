@@ -33,7 +33,7 @@ export default function CreatePost() {
     useEffect(() => {
         const fetchHobbies = async () => {
             try {
-                const response = await fetch(process.env.NEXT_PUBLIC_HOBBY_API_URL!);
+                const response = await fetch(process.env.HOBBY_API_URL!);
                 if (response.ok) {
                     const data: Hobby[] = await response.json();
                     setHobbies(data);
@@ -69,7 +69,7 @@ export default function CreatePost() {
 
     const fetchUserId = async (userName: string): Promise<number | null> => {
         try {
-            const response = await fetch(process.env.NEXT_PUBLIC_USER_API_URL!+`/keycloak/${userName}`);
+            const response = await fetch(process.env.USER_API_URL!+`/keycloak/${userName}`);
             if (response.ok) {
                 const data = await response.json();
                 return data.id;
@@ -82,7 +82,7 @@ export default function CreatePost() {
 
     const fetchHobbyId = async (hobbyName: string): Promise<number | null> => {
         try {
-            const response = await fetch(process.env.NEXT_PUBLIC_HOBBY_API_URL!+`/hobbyname/${encodeURIComponent(hobbyName)}`);
+            const response = await fetch(process.env.HOBBY_API_URL!+`/hobbyname/${encodeURIComponent(hobbyName)}`);
             if (response.ok) {
                 const data = await response.json();
                 return data.id;

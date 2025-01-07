@@ -2,7 +2,7 @@
 
 export async function GET(request: Request) {
     try {
-        const apiUrl = process.env.NEXT_PUBLIC_POSTQUERY_API_URL;
+        const apiUrl = process.env.POSTQUERY_API_URL;
         console.log(apiUrl)
         if (!apiUrl) {
             return NextResponse.json(

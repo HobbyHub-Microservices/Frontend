@@ -35,7 +35,7 @@ export function LeftSidebar({ onHobbySelect }: LeftSidebarProps) {
 
   // Fetch hobbies from API
   useEffect(() => {
-    const apiUrl = process.env.NEXT_PUBLIC_HOBBY_API_URL;
+    const apiUrl = process.env.HOBBY_API_URL;
     const fetchHobbies = async () => {
       console.log('Fetching hobbies from API...');
       try {

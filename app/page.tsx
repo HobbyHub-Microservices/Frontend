@@ -30,7 +30,7 @@ export default function Home() {
   const handleHobbySelect = (hobby) => {
     setSelectedHobby(hobby);
   };
-  const apiUrl = process.env.NEXT_PUBLIC_POSTQUERY_API_URL;
+  const apiUrl = process.env.POSTQUERY_API_URL;
   // Fetch posts from the post-query endpoint
   useEffect(() => {
     const fetchPosts = async () => {

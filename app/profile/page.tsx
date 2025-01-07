@@ -58,7 +58,7 @@ export default function ProfilePage() {
         }
     };
 
-    const url = process.env.NEXT_PUBLIC_USER_API_URL
+    const url = process.env.USER_API_URL
     const handleDeleteAccount = async () => {
         try {
             const response = await fetch(`${url}/delete-account?keycloakId=${keycloak.subject}`, {
