@@ -16,9 +16,9 @@ if (typeof window === "undefined") {
 
 const keycloak = typeof window !== "undefined"
     ? new Keycloak({
-        url: process.env.KEYCLOAK_URL,
-        realm: process.env.KEYCLOAK_REALM,
-        clientId: process.env.KEYCLOAK_CLIENT_ID,
+        url: "https://keycloak-hobbyhub.australiacentral.cloudapp.azure.com",
+        realm: "HobbyHub",
+        clientId: "frontend-public-client",
     })
     : new Keycloak({
         url: process.env.KEYCLOAK_URL,
