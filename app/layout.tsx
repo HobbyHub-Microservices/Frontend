@@ -6,11 +6,11 @@ import { ThemeProvider } from '../components/theme-provider';
 import { ThemeToggle } from '@/../../components/theme-toggle';
 import Header from '@/app/components/Header';
 import dynamic from 'next/dynamic';
-
-// Dynamically import KeycloakProvider with SSR disabled
-const KeycloakProvider = dynamic(() => import('../keycloak').then((mod) => mod.KeycloakProvider), {
-  ssr: false,
-});
+import {KeycloakProvider} from "@/keycloak";
+// // Dynamically import KeycloakProvider with SSR disabled
+// const KeycloakProvider = dynamic(() => import('../keycloak').then((mod) => mod.KeycloakProvider), {
+//   ssr: false,
+// });
 
 export default function RootLayout({
                                      children,

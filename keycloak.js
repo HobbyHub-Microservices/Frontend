@@ -8,15 +8,6 @@ console.log(`Keycloak url: ${process.env.KEYCLOAK_URL}`);
 console.log(`Keycloak realm: ${process.env.KEYCLOAK_REALM}`);
 console.log(`keycloak_cliendid: ${process.env.KEYCLOAK_CLIENT_ID}`);
 
-async function fetchKeycloakConfig() {
-    const response = await fetch('/api/keycloakConfig');
-    const keycloakConfig = await response.json();
-    return keycloakConfig;
-}
-
-fetchKeycloakConfig().then(config => {
-    console.log(config); // Use this configuration dynamically with Keycloak
-});
 
 const keycloak = typeof window !== "undefined"
     ? new Keycloak({
