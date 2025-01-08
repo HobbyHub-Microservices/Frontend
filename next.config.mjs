@@ -56,6 +56,8 @@ console.log('USER_API_URL:', process.env.USER_API_URL);
 console.log('POSTQUERY_API_URL:', process.env.POSTQUERY_API_URL);
 console.log('POSTCOMMAND_API_URL:', process.env.POSTCOMMAND_API_URL);
 
+
+
 mergeConfig(nextConfig, userConfig)
 
 function mergeConfig(nextConfig, userConfig) {
