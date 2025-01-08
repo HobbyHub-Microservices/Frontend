@@ -16,14 +16,14 @@ if (typeof window === "undefined") {
 
 const keycloak = typeof window !== "undefined"
     ? new Keycloak({
-        url: "https://keycloak-hobbyhub.australiacentral.cloudapp.azure.com",
-        realm: "HobbyHub",
-        clientId: "frontend-public-client",
+        url: process.env.KEYCLOAK_URL  || "default_url",
+        realm: process.env.KEYCLOAK_REALM || "default_url",
+        clientId: process.env.KEYCLOAK_CLIENT_ID || "default_url",
     })
     : new Keycloak({
-        url: process.env.KEYCLOAK_URL,
-        realm: process.env.KEYCLOAK_REALM,
-        clientId: process.env.KEYCLOAK_CLIENT_ID
+        url: process.env.KEYCLOAK_URL || "default_url",
+        realm: process.env.KEYCLOAK_REALM || "default_url",
+        clientId: process.env.KEYCLOAK_CLIENT_ID || "default_url"
     })
 
 export const KeycloakProvider = ({ children }) => {
