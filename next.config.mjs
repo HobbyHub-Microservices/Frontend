@@ -21,21 +21,7 @@ const nextConfig = {
         parallelServerBuildTraces: true,
         parallelServerCompiles: true,
     },
-}
-module.exports = {
-    serverRuntimeConfig: {
-        // Will only be available on the server side
-        NEXT_PUBLIC_KEYCLOAK_URL: process.env.PUBLIC_NEXT_KEYCLOAK_URL,
-        KEYCLOAK_URL: process.env.KEYCLOAK_URL,
-        KEYCLOAK_CLIENT_ID: process.env.KEYCLOAK_CLIENT_ID,
-        KEYCLOAK_REALM: process.env.KEYCLOAK_REALM,
-        HOBBY_API_URL: process.env.HOBBY_API_URL,
-        USER_API_URL: process.env.USER_API_URL,
-        POSTQUERY_API_URL: process.env.POSTQUERY_API_URL,
-        POSTCOMMAND_API_URL: process.env.POSTCOMMAND_API_URL,// Pass through env variables
-    },
-    publicRuntimeConfig: {
-        // Will be available on both server and client
+    env: {
         NEXT_PUBLIC_KEYCLOAK_URL: process.env.PUBLIC_NEXT_KEYCLOAK_URL,
         KEYCLOAK_URL: process.env.KEYCLOAK_URL,
         KEYCLOAK_CLIENT_ID: process.env.KEYCLOAK_CLIENT_ID,
@@ -55,8 +41,6 @@ console.log('HOBBY_API_URL:', process.env.HOBBY_API_URL);
 console.log('USER_API_URL:', process.env.USER_API_URL);
 console.log('POSTQUERY_API_URL:', process.env.POSTQUERY_API_URL);
 console.log('POSTCOMMAND_API_URL:', process.env.POSTCOMMAND_API_URL);
-
-
 
 mergeConfig(nextConfig, userConfig)
 
