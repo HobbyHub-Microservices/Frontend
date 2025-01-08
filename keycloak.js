@@ -8,6 +8,11 @@ console.log(`Keycloak url: ${process.env.KEYCLOAK_URL}`);
 console.log(`Keycloak realm: ${process.env.KEYCLOAK_REALM}`);
 console.log(`keycloak_cliendid: ${process.env.KEYCLOAK_CLIENT_ID}`);
 
+if (typeof window === "undefined") {
+    console.log("Keycloak.js: Running on the server side");
+} else {
+    console.log("Keycloak.js: Running on the client side");
+}
 
 const keycloak = typeof window !== "undefined"
     ? new Keycloak({

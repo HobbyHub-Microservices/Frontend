@@ -30,6 +30,13 @@ export default function Home() {
   const handleHobbySelect = (hobby) => {
     setSelectedHobby(hobby);
   };
+
+  if (typeof window === "undefined") {
+    console.log("Running on the server side");
+  } else {
+    console.log("Running on the client side");
+  }
+
   const apiUrl = process.env.POSTQUERY_API_URL;
   // Fetch posts from the post-query endpoint
   useEffect(() => {
