@@ -33,7 +33,14 @@ export default function CreatePost() {
     useEffect(() => {
         const fetchHobbies = async () => {
             try {
-                const response = await fetch(process.env.HOBBY_API_URL!);
+                const response = await fetch(process.env.HOBBY_API_URL!, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${keycloak.token}`,
+
+                    },
+                });
                 if (response.ok) {
                     const data: Hobby[] = await response.json();
                     setHobbies(data);
@@ -69,7 +76,14 @@ export default function CreatePost() {
 
     const fetchUserId = async (userName: string): Promise<number | null> => {
         try {
-            const response = await fetch(process.env.USER_API_URL!+`/keycloak/${userName}`);
+            const response = await fetch(process.env.USER_API_URL!+`/keycloak/${userName}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${keycloak.token}`,
+
+                },
+            });
             if (response.ok) {
                 const data = await response.json();
                 return data.id;
@@ -82,7 +96,14 @@ export default function CreatePost() {
 
     const fetchHobbyId = async (hobbyName: string): Promise<number | null> => {
         try {
-            const response = await fetch(process.env.HOBBY_API_URL!+`/hobbyname/${encodeURIComponent(hobbyName)}`);
+            const response = await fetch(process.env.HOBBY_API_URL!+`/hobbyname/${encodeURIComponent(hobbyName)}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${keycloak.token}`,
+
+                },
+            });
             if (response.ok) {
                 const data = await response.json();
                 return data.id;
@@ -115,8 +136,12 @@ export default function CreatePost() {
         try {
             const postQueryResponse = await fetch('/api/query/Post', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${keycloak.token}`
+                },
                 body: JSON.stringify(postQueryData),
+
             });
 
             if (!postQueryResponse.ok) {
@@ -145,7 +170,7 @@ export default function CreatePost() {
             console.log(postCommandData)
             const postCommandResponse = await fetch('/api/Post', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${keycloak.token}` },
                 body: JSON.stringify(postCommandData),
             });
 
