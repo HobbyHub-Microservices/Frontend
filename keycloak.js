@@ -6,8 +6,8 @@ const KeycloakContext = createContext();
 
 console.log(`public Keycloak url: ${process.env.NEXT_PUBLIC_KEYCLOAK_URL}`);
 console.log(`Keycloak url: ${process.env.KEYCLOAK_URL}`);
-console.log(`Keycloak realm: ${process.env.NEXT_PUBLIC_KEYCLOAK_REALM}`);
-console.log(`keycloak_cliendid: ${process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID}`);
+console.log(`Keycloak realm: ${process.env.KEYCLOAK_REALM}`);
+console.log(`keycloak_cliendid: ${process.env.KEYCLOAK_CLIENT_ID}`);
 
 
 
@@ -19,9 +19,9 @@ if (typeof window === "undefined") {
 
 const keycloak = typeof window !== "undefined"
     ? new Keycloak({
-        url: "https://keycloak-hobbyhub.australiacentral.cloudapp.azure.com"  || "default_url",
-        realm: "HobbyHub" || "default_url",
-        clientId: "frontend-public-client" || "default_url",
+        url: process.env.KEYCLOAK_URL  || "default_url",
+        realm: process.env.KEYCLOAK_REALM || "default_url",
+        clientId: process.env.KEYCLOAK_CLIENT_ID || "default_url",
     })
     : new Keycloak({
         url: process.env.KEYCLOAK_URL || "default_url",
