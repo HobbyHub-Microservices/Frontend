@@ -1,23 +1,15 @@
 ﻿import React, { createContext, useContext, useEffect, useState } from "react";
 import Keycloak from "keycloak-js";
 
+
 const KeycloakContext = createContext();
 
 console.log(`public Keycloak url: ${process.env.NEXT_PUBLIC_KEYCLOAK_URL}`);
 console.log(`Keycloak url: ${process.env.KEYCLOAK_URL}`);
-console.log(`Keycloak realm: ${process.env.KEYCLOAK_REALM}`);
-console.log(`keycloak_cliendid: ${process.env.KEYCLOAK_CLIENT_ID}`);
+console.log(`Keycloak realm: ${process.env.NEXT_PUBLIC_KEYCLOAK_REALM}`);
+console.log(`keycloak_cliendid: ${process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID}`);
 
-export async function getServerSideProps() {
-    const keycloakUrl = process.env.KEYCLOAK_URL;
 
-    return {
-        props: {
-            keycloakUrl,
-        },
-    };
-}
-console.log(`Keycloak url: ${keycloakUrl}`);
 
 if (typeof window === "undefined") {
     console.log("Keycloak.js: Running on the server side");
